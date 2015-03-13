@@ -23,6 +23,8 @@
 
 #import "ECPercentDrivenInteractiveTransition.h"
 
+#import "ECSlidingViewController.h"
+
 @interface ECPercentDrivenInteractiveTransition ()
 @property (nonatomic, assign) id<UIViewControllerContextTransitioning> transitionContext;
 @property (nonatomic, assign) BOOL isActive;
@@ -102,6 +104,14 @@
     
     if (_percentComplete == 0.0) {
         self.isActive = NO;
+        
+        // layer animationを完了させると一瞬ちらつくため、
+        // viewの位置を初期位置に戻す
+        if ([self.transitionContext isKindOfClass:[ECSlidingViewController class]]) {
+            ECSlidingViewController* vc = (ECSlidingViewController*)self.transitionContext;
+            [vc resetLayoutSubviews];
+        }
+        
         CALayer *layer = [self.transitionContext containerView].layer;
         [layer removeAllAnimations];
         layer.speed = 1.0;

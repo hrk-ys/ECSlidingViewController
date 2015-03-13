@@ -942,4 +942,12 @@
     self.coordinatorInteractionEnded = handler;
 }
 
+
+
+- (void)resetLayoutSubviews {
+    self.topViewController.view.frame = [self topViewCalculatedFrameForPosition:self.currentTopViewPosition];
+    self.underLeftViewController.view.frame = [self underLeftViewCalculatedFrameForTopViewPosition:self.currentTopViewPosition];
+    self.underRightViewController.view.frame = [self underRightViewCalculatedFrameForTopViewPosition:self.currentTopViewPosition];
+}
+
 @end

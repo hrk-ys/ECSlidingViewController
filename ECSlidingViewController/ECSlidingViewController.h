@@ -303,4 +303,8 @@
  */
 @property (nonatomic, assign) NSTimeInterval defaultTransitionDuration;
 
+
+
+- (void)resetLayoutSubviews;
+
 @end
