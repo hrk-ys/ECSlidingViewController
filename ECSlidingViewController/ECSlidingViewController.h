@@ -306,5 +306,6 @@
 
 
 - (void)resetLayoutSubviews;
+- (NSString*)movingViewControllerKey;
 
 @end

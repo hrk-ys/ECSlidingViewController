@@ -892,6 +892,7 @@
 - (CGRect)initialFrameForViewController:(UIViewController *)vc {
     if (self.currentOperation == ECSlidingViewControllerOperationAnchorLeft) {
         if ([vc isEqual:self.topViewController]) return [self topViewCalculatedFrameForPosition:ECSlidingViewControllerTopViewPositionCentered];
+        if ([vc isEqual:self.underRightViewController]) return [self underRightViewCalculatedFrameForTopViewPosition:ECSlidingViewControllerTopViewPositionCentered];
     } else if (self.currentOperation == ECSlidingViewControllerOperationAnchorRight) {
         if ([vc isEqual:self.topViewController]) return [self topViewCalculatedFrameForPosition:ECSlidingViewControllerTopViewPositionCentered];
     } else if (self.currentOperation == ECSlidingViewControllerOperationResetFromLeft) {
@@ -914,6 +915,7 @@
         if (vc == self.underLeftViewController)  return [self underLeftViewCalculatedFrameForTopViewPosition:ECSlidingViewControllerTopViewPositionAnchoredRight];
     } else if (self.currentOperation == ECSlidingViewControllerOperationResetFromLeft) {
         if (vc == self.topViewController) return [self topViewCalculatedFrameForPosition:ECSlidingViewControllerTopViewPositionCentered];
+        if (vc == self.underRightViewController) return [self underRightViewCalculatedFrameForTopViewPosition:ECSlidingViewControllerTopViewPositionCentered];
     } else if (self.currentOperation == ECSlidingViewControllerOperationResetFromRight) {
         if (vc == self.topViewController) return [self topViewCalculatedFrameForPosition:ECSlidingViewControllerTopViewPositionCentered];
     }
@@ -948,6 +950,14 @@
     self.topViewController.view.frame = [self topViewCalculatedFrameForPosition:self.currentTopViewPosition];
     self.underLeftViewController.view.frame = [self underLeftViewCalculatedFrameForTopViewPosition:self.currentTopViewPosition];
     self.underRightViewController.view.frame = [self underRightViewCalculatedFrameForTopViewPosition:self.currentTopViewPosition];
+}
+
+- (NSString*)movingViewControllerKey {
+    if (_currentOperation == ECSlidingViewControllerOperationAnchorLeft
+        || _currentOperation == ECSlidingViewControllerOperationResetFromLeft) {
+        return ECTransitionContextUnderRightControllerKey;
+    }
+    return ECTransitionContextTopViewControllerKey;
 }
 
 @end

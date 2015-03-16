@@ -49,7 +49,8 @@
 - (void)startInteractiveTransition:(id<UIViewControllerContextTransitioning>)transitionContext {
     [super startInteractiveTransition:transitionContext];
     
-    UIViewController *topViewController = [transitionContext viewControllerForKey:ECTransitionContextTopViewControllerKey];
+    NSString* key = [self.slidingViewController movingViewControllerKey];
+    UIViewController *topViewController = [transitionContext viewControllerForKey:key];
     CGFloat finalLeftEdge = CGRectGetMinX([transitionContext finalFrameForViewController:topViewController]);
     CGFloat initialLeftEdge = CGRectGetMinX([transitionContext initialFrameForViewController:topViewController]);
     CGFloat fullWidth = fabsf(finalLeftEdge - initialLeftEdge);
