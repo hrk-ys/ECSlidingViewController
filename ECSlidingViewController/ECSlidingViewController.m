@@ -109,6 +109,8 @@
     self.anchorRightRevealAmount = 276;
     _currentTopViewPosition = ECSlidingViewControllerTopViewPositionCentered;
     self.transitionInProgress = NO;
+    self.enabledLeftGesture = YES;
+    self.enabledRightGesture = YES;
 }
 
 #pragma mark - UIViewController
@@ -634,8 +636,8 @@
     } else if (self.currentTopViewPosition == ECSlidingViewControllerTopViewPositionAnchoredRight) {
         if (operation == ECSlidingViewControllerOperationResetFromRight) return YES;
     } else if (self.currentTopViewPosition == ECSlidingViewControllerTopViewPositionCentered) {
-        if (operation == ECSlidingViewControllerOperationAnchorLeft  && self.underRightViewController) return YES;
-        if (operation == ECSlidingViewControllerOperationAnchorRight && self.underLeftViewController)  return YES;
+        if (operation == ECSlidingViewControllerOperationAnchorLeft  && self.enabledLeftGesture && self.underRightViewController) return YES;
+        if (operation == ECSlidingViewControllerOperationAnchorRight && self.enabledRightGesture && self.underLeftViewController)  return YES;
     }
     
     return NO;

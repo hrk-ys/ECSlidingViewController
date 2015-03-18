@@ -305,7 +305,15 @@
 
 
 
+// インタラクティブキャンセルした時に画面がちらつくため、
+// 各viewControllerのframeをリセットする
 - (void)resetLayoutSubviews;
+
+// アニメーションするViewControllerを決める
 - (NSString*)movingViewControllerKey;
+
+// インタラクティブのON/OFF切り替え
+@property (nonatomic, assign) BOOL enabledLeftGesture;
+@property (nonatomic, assign) BOOL enabledRightGesture;
 
 @end
