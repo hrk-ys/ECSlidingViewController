@@ -111,6 +111,16 @@
     self.transitionInProgress = NO;
     self.enabledLeftGesture = YES;
     self.enabledRightGesture = YES;
+    
+    self.shadowView = [[UIView alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
+    CALayer* layer = self.shadowView.layer;
+    layer.shadowOffset = CGSizeMake(1, 1);
+    layer.shadowColor = [UIColor grayColor].CGColor;
+    layer.shadowRadius = 4.0f;
+    layer.shadowOpacity = 0.80f;
+    layer.shadowPath = [UIBezierPath bezierPathWithRect:self.shadowView.bounds].CGPath;
+    layer.shouldRasterize = YES;
+    layer.rasterizationScale = [UIScreen mainScreen].scale;
 }
 
 #pragma mark - UIViewController
@@ -538,6 +548,14 @@
     return containerViewFrame;
 }
 
+- (CGRect)shadowViewCalculatedFrameForTopViewPosition:(ECSlidingViewControllerTopViewPosition)position {
+    CGRect frameFromDelegate = [self frameFromDelegateForShadowView:self.shadowView
+                                                    topViewPosition:position];
+    if (!CGRectIsInfinite(frameFromDelegate)) return frameFromDelegate;
+    
+    return CGRectZero;
+}
+
 - (CGRect)frameFromDelegateForViewController:(UIViewController *)viewController
                              topViewPosition:(ECSlidingViewControllerTopViewPosition)topViewPosition {
     CGRect frame = CGRectInfinite;
@@ -549,6 +567,24 @@
         if (layoutController) {
             frame = [layoutController slidingViewController:self
                                      frameForViewController:viewController
+                                            topViewPosition:topViewPosition];
+        }
+    }
+    
+    return frame;
+}
+
+- (CGRect)frameFromDelegateForShadowView:(UIView*)shadowView
+                         topViewPosition:(ECSlidingViewControllerTopViewPosition)topViewPosition {
+    CGRect frame = CGRectInfinite;
+    
+    if ([(NSObject *)self.delegate respondsToSelector:@selector(slidingViewController:layoutControllerForTopViewPosition:)]) {
+        id<ECSlidingViewControllerLayout> layoutController = [self.delegate slidingViewController:self
+                                                               layoutControllerForTopViewPosition:topViewPosition];
+        
+        if (layoutController) {
+            frame = [layoutController slidingViewController:self
+                                         frameForShadowView:shadowView
                                             topViewPosition:topViewPosition];
         }
     }
@@ -673,6 +709,9 @@
         viewControllerWillAppear = self.underRightViewController;
     } else if (operation == ECSlidingViewControllerOperationAnchorRight) {
         viewControllerWillAppear = self.underLeftViewController;
+    } else if (operation == ECSlidingViewControllerOperationResetFromLeft
+               || operation == ECSlidingViewControllerOperationResetFromRight) {
+        viewControllerWillAppear = self.topViewController;
     }
     
     return viewControllerWillAppear;
@@ -685,6 +724,9 @@
         viewControllerWillDisappear = self.underRightViewController;
     } else if (operation == ECSlidingViewControllerOperationResetFromRight) {
         viewControllerWillDisappear = self.underLeftViewController;
+    } else if (operation == ECSlidingViewControllerOperationResetFromLeft
+               || operation == ECSlidingViewControllerOperationResetFromRight) {
+        viewControllerWillDisappear = self.topViewController;
     }
     
     return viewControllerWillDisappear;
@@ -952,6 +994,7 @@
     self.topViewController.view.frame = [self topViewCalculatedFrameForPosition:self.currentTopViewPosition];
     self.underLeftViewController.view.frame = [self underLeftViewCalculatedFrameForTopViewPosition:self.currentTopViewPosition];
     self.underRightViewController.view.frame = [self underRightViewCalculatedFrameForTopViewPosition:self.currentTopViewPosition];
+    self.shadowView.frame = [self shadowViewCalculatedFrameForTopViewPosition:self.currentTopViewPosition];
 }
 
 - (NSString*)movingViewControllerKey {

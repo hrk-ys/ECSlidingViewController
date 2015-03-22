@@ -44,6 +44,11 @@
 - (CGRect)slidingViewController:(ECSlidingViewController *)slidingViewController
          frameForViewController:(UIViewController *)viewController
                 topViewPosition:(ECSlidingViewControllerTopViewPosition)topViewPosition;
+
+@optional
+- (CGRect)slidingViewController:(ECSlidingViewController *)slidingViewController
+             frameForShadowView:(UIView*)shadowView
+                topViewPosition:(ECSlidingViewControllerTopViewPosition)topViewPosition;
 @end
 
 /**
@@ -315,5 +320,8 @@
 // インタラクティブのON/OFF切り替え
 @property (nonatomic, assign) BOOL enabledLeftGesture;
 @property (nonatomic, assign) BOOL enabledRightGesture;
+
+// シャドウ
+@property (nonatomic) UIView* shadowView;
 
 @end
