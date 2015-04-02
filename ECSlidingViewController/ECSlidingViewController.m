@@ -724,8 +724,8 @@
         viewControllerWillDisappear = self.underRightViewController;
     } else if (operation == ECSlidingViewControllerOperationResetFromRight) {
         viewControllerWillDisappear = self.underLeftViewController;
-    } else if (operation == ECSlidingViewControllerOperationResetFromLeft
-               || operation == ECSlidingViewControllerOperationResetFromRight) {
+    } else if (operation == ECSlidingViewControllerOperationAnchorLeft
+               || operation == ECSlidingViewControllerOperationAnchorRight) {
         viewControllerWillDisappear = self.topViewController;
     }
     
