@@ -149,23 +149,25 @@
 
 - (void)viewWillAppear:(BOOL)animated {
     [super viewWillAppear:animated];
-    [self.topViewController beginAppearanceTransition:YES animated:animated];
     
     if (self.currentTopViewPosition == ECSlidingViewControllerTopViewPositionAnchoredLeft) {
         [self.underRightViewController beginAppearanceTransition:YES animated:animated];
     } else if (self.currentTopViewPosition == ECSlidingViewControllerTopViewPositionAnchoredRight) {
         [self.underLeftViewController beginAppearanceTransition:YES animated:animated];
+    } else {
+        [self.topViewController beginAppearanceTransition:YES animated:animated];
     }
 }
 
 - (void)viewDidAppear:(BOOL)animated {
     [super viewDidAppear:animated];
-    [self.topViewController endAppearanceTransition];
     
     if (self.currentTopViewPosition == ECSlidingViewControllerTopViewPositionAnchoredLeft) {
         [self.underRightViewController endAppearanceTransition];
     } else if (self.currentTopViewPosition == ECSlidingViewControllerTopViewPositionAnchoredRight) {
         [self.underLeftViewController endAppearanceTransition];
+    } else {
+        [self.topViewController endAppearanceTransition];
     }
 }
 
